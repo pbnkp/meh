@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas fun</title>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="client.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      gad = new GadClient(document.getElementById('fun_times'));
+      gad.start()
+    });
+  </script>
+</head>
+<body>
+<canvas id="fun_times" width="800" height="500">
+You need a web browser that supports the canvas element.
+</canvas>
+</body>
+</html>
