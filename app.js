@@ -18,7 +18,7 @@ exports.public_path = function (loc) {
       pathname = path.join(loc, head.url.capture[0] + head.url.capture[2])
       back({
         'headers': {'content-type': exports.MIME_TYPES[head.url.capture[2]]},
-        'body': fs.readFileSync(pathname)
+        'body'   : fs.readFileSync(pathname)
       })()
     }
   }
