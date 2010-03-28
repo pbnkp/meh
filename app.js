@@ -10,16 +10,20 @@ exports.MIME_TYPES = {
     ".manifest" : "text/cache-manifest"
   }
 
-// WARNING: You can access any file on the host with a properly crafted URL.
-// FIXME: goto WARNING
-exports.public_path = function (loc) {
+exports.file_path = function (loc) {
   return function (back) {
-    return function (head) {
-      pathname = path.join(loc, head.url.capture[0] + head.url.capture[2])
-      back({
-        'headers': {'content-type': exports.MIME_TYPES[head.url.capture[2]]},
-        'body'   : fs.readFileSync(pathname)
-      })()
+    return function (req) {
+      var nloc = path.normalize(loc),
+         fpath = req.url.capture ? path.join(nloc, req.url.capture) : nloc
+      if (!fpath.match('^' + nloc))
+        back({'status': 403, 'body': '<h1>403 FORBIDDEN</h1>'})()
+      else fs.readFile(fpath, function (err, data) {
+        if (err) back({'status': 404, 'body': '<h1>404 NOT FOUND</h1>'})()
+        else back({
+            'headers': {'content-type': exports.MIME_TYPES[path.extname(fpath)]},
+            'body'   : data
+          })()
+      })
     }
   }
 }

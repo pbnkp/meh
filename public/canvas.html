@@ -3,18 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Canvas fun</title>
-  <script type="text/javascript" src="jquery.js"></script>
-  <script type="text/javascript" src="client.js"></script>
+  <link rel="stylesheet" href="/public/style.css" type="text/css"/>
+  <script type="text/javascript" src="/public/jquery.js"></script>
+  <script type="text/javascript" src="/public/client.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
-      gad = new GadClient(document.getElementById('fun_times'));
+      gad = new GadClient(
+        document.getElementById('main_viewport'),
+        document.getElementById('chat_area')
+      );
       gad.start()
     });
   </script>
 </head>
 <body>
-<canvas id="fun_times" width="800" height="500">
-You need a web browser that supports the canvas element.
-</canvas>
+<div id="game_area">
+  <canvas id="main_viewport" width="800" height="500">
+    You need a web browser that supports the canvas element.
+  </canvas>
+</div>
+<div id="chat_area"></div>
+  <input id="chat_input" size="40" />
+  <textarea id="chat_output" rows="30" cols="40"></textarea>
 </body>
 </html>
