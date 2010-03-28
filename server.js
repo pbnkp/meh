@@ -4,7 +4,7 @@ var
   fs   = require("fs"),
   net  = require("net"),
   fab  = require("./vendor/fab"),
-  gad  = require("./gad"),
+  gad  = require("./vendor/gad"),
 
   app  = fab()
     (fab.listener)
