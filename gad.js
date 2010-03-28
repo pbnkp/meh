@@ -1,4 +1,6 @@
-/*
+/* 
+ * Gad!
+ *
  * // Example
  * var http = require("http"),
  *     fab  = require("./vendor/fab"),
