@@ -8,7 +8,7 @@ var
 
   app  = fab()
     (fab.listener)
-    (gad.logger)
+    (gad.logger("access.log"))
     (/\/public\/(.+)/, gad.file_path('./public'))
     ('/', gad.file_path('./public/canvas.html'))
   (),

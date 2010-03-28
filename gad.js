@@ -7,7 +7,7 @@
  *     gad  = require("./gad"),
  *     app  = fab()
  *       (fab.listener)
- *       (gad.logger)
+ *       (gad.logger("access.log"))
  *       (/\/public\/(.+)/, gad.file_path('./public'))
  *       ('/', gad.file_path('./public/canvas.html'))
  *     ()
@@ -29,6 +29,8 @@ function error_page(code, back) {
   back({'status':code, 'body':'<h1>'+code+' '+error_status[code]+'</h1>'})()
 }
 
+// Uses an URL capture to serve public files from a directory.
+// Without an URL capture serves the file specified by loc.
 exports.file_path = function (loc) {
   return function (back) {
     return function (req) {
@@ -57,6 +59,16 @@ exports.middleware = function (fn) {
   }
 }
 
-exports.logger = exports.middleware(function (req) {
-  sys.puts("[" + new Date().toString() + "] " + req.method + "  " + req.url.href)
-})
+// Pass a filename to log to a file, otherwise logs to stdout.
+// Only logs requests, not responses.
+exports.logger = function (filename) {
+  if (filename) {
+    var fh = fs.openSync(filename,"w+"),
+       log = function (line) { fs.write(fh, line + "\n") }
+  } else {
+    var log = function (line) { sys.puts(line) }
+  }
+  return exports.middleware(function (req) {
+    log("[" + new Date().toString() + "] " + req.method + "  " + req.url.href)
+  })
+}
