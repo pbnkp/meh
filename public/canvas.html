@@ -5,14 +5,33 @@
   <title>Canvas fun</title>
   <link rel="stylesheet" href="/public/style.css" type="text/css"/>
   <script type="text/javascript" src="/public/jquery.js"></script>
+  <script type="text/javascript" src="/public/jquery.ws.js"></script>
   <script type="text/javascript" src="/public/client.js"></script>
   <script type="text/javascript">
+    var ws, gad
     $(document).ready(function () {
       gad = new GadClient(
         document.getElementById('main_viewport'),
         document.getElementById('chat_area')
       );
-      gad.start()
+      gad.start();
+
+      ws = $.ws.conn({
+        url : 'ws://localhost:3840',
+        onopen : function () {
+          $('#chat_send').click(function (e) {
+            ws.send($('#chat_input').val());
+            $('#chat_input').val('');
+          })
+          console.log('connected');
+        },
+        onmessage : function (data) {
+          $('#chat_output').append("<div>" + data + "</div>");
+        },
+        onclose : function (event) {
+          console.log('disconnected');
+        }
+      });
     });
   </script>
 </head>
@@ -23,7 +42,8 @@
   </canvas>
 </div>
 <div id="chat_area"></div>
-  <input id="chat_input" size="40" />
-  <textarea id="chat_output" rows="30" cols="40"></textarea>
+  <input id="chat_input" size="40"/>
+  <button id="chat_send">Send</button>
+  <div id="chat_output"></div>
 </body>
 </html>

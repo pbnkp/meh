@@ -2,7 +2,7 @@ var
   http = require("http"),
   sys  = require("sys"),
   fs   = require("fs"),
-  net  = require("net"),
+  ws   = require("./vendor/ws"),
   fab  = require("./vendor/fab"),
   gad  = require("./vendor/gad"),
 
@@ -13,22 +13,21 @@ var
     ('/', gad.file_path('./public/canvas.html'))
   (),
 
-  game_server = net.createServer(function (socket) {
-    socket.setEncoding("utf8")
-    socket.setNoDelay(true)
-    socket.addListener("connect", function () {
-      socket.write("joined the game\r\n")
+  game_server = ws.createServer(function (socket) {
+    socket.addListener("connect", function (resource) {
+      sys.puts("client connected from " + resource)
+      socket.write("welcome\r\n")
     })
     socket.addListener("data", function (data) {
       socket.write(data)
     })
-    socket.addListener("end", function () {
-      socket.write("left the game\r\n")
+    socket.addListener("close", function () {
+      sys.puts("client left the game")
     })
   })
 
 http.createServer(app).listen(0xFAB) // 4011
-game_server.listen(0xDEAD) // 3840
+game_server.listen(3840) // 3840
 
 require("repl").start("> ")
 
