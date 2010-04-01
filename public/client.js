@@ -1,26 +1,32 @@
-function GadClient(canvas) {
-  var client = this;
-  this.canvas = canvas;
-  this.ctx = this.context();
-  this.hero = [30,240];
-  this.hero_vector = [0,0];
+function GadClient(canvas, chat_area) {
+  this.canvas      = canvas;
+  this.ctx         = this.context();
+  this.hero        = [30, 240];
+  this.hero_vector = [ 0, 0];
+  var client       = this;
   $(document).keypress(function (event) {
     client.processKey(event.keyCode);
-    return true;
   })
 }
 
 GadClient.prototype.processKey = function (keyCode) {
-  if (keyCode == 112)      // p
-    this.hero_vector = [0,0];    // pause
-  else if (keyCode == 104)      // h
-    this.hero_vector[0] -= 1;    // left
-  else if (keyCode == 107) // k
-    this.hero_vector[1] -= 1;    // up
-  else if (keyCode == 106) // j
-    this.hero_vector[1] += 1;    // down
-  else if (keyCode == 108) // l
-    this.hero_vector[0] += 1;    // right
+  switch (keyCode) {
+    case 112: // p
+      this.hero_vector = [0,0]; // pause
+      break;
+    case 104: // h
+      this.hero_vector[0] -= 1; // left
+      break;
+    case 107: // k
+      this.hero_vector[1] -= 1; // up
+      break;
+    case 106: // j
+      this.hero_vector[1] += 1; // down
+      break;
+    case 108: // l
+      this.hero_vector[0] += 1; // right
+      break;
+  }
 }
 
 GadClient.prototype.context = function () {
@@ -34,12 +40,15 @@ GadClient.prototype.context = function () {
 
 GadClient.prototype.start = function () {
   var client = this;
-  setInterval(function () { client.draw() }, 50);
+  //setInterval(function () { client.draw() }, 50); // 20 FPS
+  setInterval(function () { client.draw() }, 25); // 40 FPS
 }
 
 GadClient.prototype.draw = function () {
-  this.canvas.width = this.canvas.width;
-  this.hero[0] += this.hero_vector[0]
-  this.hero[1] += this.hero_vector[1]
+	this.ctx.fillStyle = "#fff";
+  this.ctx.fillRect(this.hero[0], this.hero[1], 20, 20);
+  this.hero[0]     += this.hero_vector[0];
+  this.hero[1]     += this.hero_vector[1];
+	this.ctx.fillStyle = "#000";
   this.ctx.fillRect(this.hero[0], this.hero[1], 20, 20);
 }
