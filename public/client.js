@@ -40,13 +40,15 @@ GadClient.prototype.context = function () {
 
 GadClient.prototype.start = function () {
   var client = this;
-  setInterval(function () { client.draw() }, 50); // 20 FPS
-  //setInterval(function () { client.draw() }, 25); // 40 FPS
+  //setInterval(function () { client.draw() }, 50); // 20 FPS
+  setInterval(function () { client.draw() }, 25); // 40 FPS
 }
 
 GadClient.prototype.draw = function () {
+	this.ctx.fillStyle = "#fff";
+  this.ctx.fillRect(this.hero[0], this.hero[1], 20, 20);
   this.hero[0]     += this.hero_vector[0];
   this.hero[1]     += this.hero_vector[1];
-  this.canvas.width = this.canvas.width; // clear
+	this.ctx.fillStyle = "#000";
   this.ctx.fillRect(this.hero[0], this.hero[1], 20, 20);
 }
