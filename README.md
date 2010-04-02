@@ -1,23 +1,28 @@
 Streams twitter messages to web browsers in real time using web sockets.
 
-## Dependencies:
+This is part of some ongoing experiments with javascript and web sockets.
+For more info see my [blog post][1] on the subject.
 
-* [node.js][1]
-* [fab v3][2]
-* [node.ws.js][3]
-* [twitter-node][4]
+## Dependencies
+
+* [node.js][2]
+* [fab v3][3]
+* [node.ws.js][4]
+* [twitter-node][5]
 
 ## Usage
 
     $ user=NAME password=SECRET node server.js
 
-For more info see my [blog post][5] on the subject.
+## Author
 
-[1]: http://github.com/ry/node
-[2]: http://github.com/jed/fab/tree/v3
-[3]: http://github.com/ncr/node.ws.js
-[4]: http://github.com/technoweenie/twitter-node
-[5]: http://zackhobson.com/2010/03/28/node-js-and-web-sockets.html
+Copyright (c) 2010 Zack Hobson 
+
+[1]: http://zackhobson.com/2010/03/28/node-js-and-web-sockets.html
+[2]: http://github.com/ry/node
+[3]: http://github.com/jed/fab/tree/v3
+[4]: http://github.com/ncr/node.ws.js
+[5]: http://github.com/technoweenie/twitter-node
 
 
 
