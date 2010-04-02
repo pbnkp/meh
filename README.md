@@ -9,6 +9,8 @@ Streams twitter messages to web browsers in real time using web sockets.
 
 ## Usage
 
+    $ user=NAME password=SECRET node server.js
+
 For more info see my [blog post][5] on the subject.
 
 [1]: http://github.com/ry/node
