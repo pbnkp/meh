@@ -11,8 +11,15 @@ var
   app  = fab()
     (fab.listener)
     (gad.logger("access.log"))
-    (/\/public\/(.+)/, gad.file_path('./public'))
-    ('/', gad.file_path('./public/canvas.html'))
+    ('/public', fab.fs('./public')) 
+    ('/', function (back) {
+      return function (req) {
+        fs.readFile('./public/canvas.html', 'utf8', function(err, data) {
+          if (err) throw err
+          back({body: data, header: {content_type: 'text/html'}})()
+        })
+      }
+    })
   (),
 
   client_sockets = {},
@@ -44,7 +51,7 @@ var
 http.createServer(app).listen(0xFAB) // 4011
 game_server.listen(3840) // 3840
 twitter.addListener('tweet', function (tweet) {
-  sys.puts("got " + sys.inspect(tweet.text) + " from stream")
+  //sys.puts("got " + sys.inspect(tweet.text) + " from stream")
   for (socket_id in client_sockets) {
     if (client_sockets[socket_id]) {
       client_sockets[socket_id].write(tweet.text)
