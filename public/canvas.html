@@ -8,13 +8,15 @@
   <script type="text/javascript" src="/public/jquery.ws.js"></script>
   <script type="text/javascript" src="/public/client.js"></script>
   <script type="text/javascript">
-    var ws, gad
+    var ws //, gad
     $(document).ready(function () {
+      /*
       gad = new GadClient(
         document.getElementById('main_viewport'),
         document.getElementById('chat_area')
       );
       gad.start();
+      */
 
       ws = $.ws.conn({
         url : 'ws://localhost:3840',
@@ -36,14 +38,15 @@
   </script>
 </head>
 <body>
-<div id="game_area">
+<!-- <div id="game_area">
   <canvas id="main_viewport" width="800" height="500">
     You need a web browser that supports the canvas element.
   </canvas>
-</div>
-<div id="chat_area"></div>
+</div> -->
+<div id="chat_area">
   <input id="chat_input" size="40"/>
   <button id="chat_send">Send</button>
   <div id="chat_output"></div>
+</div>
 </body>
 </html>
