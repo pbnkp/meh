@@ -32,6 +32,10 @@
           data = JSON.parse(data);
           if (data.term1)   { $('#term1_count').html(data.term1) }
           if (data.term2)   { $('#term2_count').html(data.term2) }
+          if (data.terms) {
+            $('#term1').html(data.terms[0])
+            $('#term2').html(data.terms[1])
+          }
           if (data.message) { $('#chat_output').append('<div>'+data.message+'</div>')}
         },
         onclose : function (event) {
@@ -50,8 +54,8 @@
 </div> -->
 
 <div id="game_area">
-  iPad: <span id="term1_count"></span>
-  Girls: <span id="term2_count"></span>
+  <span id="term1"></span>: <span id="term1_count"></span>
+  <span id="term2"></span>: <span id="term2_count"></span>
 </div>
 
 <div id="chat_area">

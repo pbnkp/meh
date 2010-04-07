@@ -20,8 +20,17 @@ var
     })
   (),
 
+  terms = process.ARGV.slice(2),
+
+  twitter = new tn.TwitterNode({
+    user: process.env['user'],
+    password: process.env['password'],
+    track: terms
+  }),
+
   client_sockets = {},
   client_count   = 0,
+  count1 = 0, count2 = 0,
 
   game_server = ws.createServer(function (socket) {
     var socket_id = "client" + client_count
@@ -30,7 +39,8 @@ var
 
     socket.addListener("connect", function (resource) {
       sys.puts("client " + socket_id + " connected from " + resource)
-      socket.write(JSON.stringify({message:'welcome!'}))
+      socket.write(JSON.stringify({message:'welcome!', terms:terms,
+        term1:count1, term2:count2}))
     })
     socket.addListener("data", function (data) {
       //sys.puts("client sent " + sys.inspect(data))
@@ -45,23 +55,15 @@ var
       delete client_sockets[socket_id]
       sys.puts("client left the session")
     })
-  }),
-
-  twitter = new tn.TwitterNode({
-    user: process.env['user'],
-    password: process.env['password'],
-    track: ['ipad', 'girls']
-  }),
-
-  count1 = 0, count2 = 0
+  })
 
 http.createServer(app).listen(0xFAB) // 4011
 game_server.listen(3840) // 3840
 twitter.addListener('tweet', function (tweet) {
   //sys.puts("got " + sys.inspect(tweet.text) + " from stream")
   for (socket_id in client_sockets) {
-    if (tweet.text.match('ipad' )) { count1++ }
-    if (tweet.text.match('girls')) { count2++ }
+    if (tweet.text.match(terms[0])) { count1++ }
+    if (tweet.text.match(terms[1])) { count2++ }
     if (client_sockets[socket_id]) {
       var json = JSON.stringify({'term1':count1,'term2':count2})
       client_sockets[socket_id].write(json)
