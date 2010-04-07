@@ -12,7 +12,8 @@ For more info see my [blog post][1] on the subject.
 
 ## Usage
 
-    $ user=NAME password=SECRET node server.js
+    $ user=NAME password=SECRET node server.js TERM1 TERM2
+    $ open http://localhost:4011/
 
 ## Author
 
