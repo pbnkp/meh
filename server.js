@@ -30,7 +30,7 @@ var
 
   client_sockets = {},
   client_count   = 0,
-  count1 = 0, count2 = 0,
+  counts = new Array(terms.length),
 
   game_server = ws.createServer(function (socket) {
     var socket_id = "client" + client_count
@@ -39,8 +39,7 @@ var
 
     socket.addListener("connect", function (resource) {
       sys.puts("client " + socket_id + " connected from " + resource)
-      socket.write(JSON.stringify({message:'welcome!', terms:terms,
-        term1:count1, term2:count2}))
+      socket.write(JSON.stringify({message:'welcome!', terms:terms, counts:counts}))
     })
     socket.addListener("data", function (data) {
       //sys.puts("client sent " + sys.inspect(data))
@@ -62,10 +61,11 @@ game_server.listen(3840) // 3840
 twitter.addListener('tweet', function (tweet) {
   //sys.puts("got " + sys.inspect(tweet.text) + " from stream")
   for (socket_id in client_sockets) {
-    if (tweet.text.match(terms[0])) { count1++ }
-    if (tweet.text.match(terms[1])) { count2++ }
+    for (term in terms) {
+      if (tweet.text.match(terms[term])) { counts[term] = (counts[term] || 0) + 1 }
+    }
     if (client_sockets[socket_id]) {
-      var json = JSON.stringify({'term1':count1,'term2':count2})
+      var json = JSON.stringify({'counts':counts})
       client_sockets[socket_id].write(json)
       //sys.puts("sent " + json)
     }

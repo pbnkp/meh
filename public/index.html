@@ -30,8 +30,11 @@
         },
         onmessage : function (data) {
           data = JSON.parse(data);
-          if (data.term1)   { $('#term1_count').html(data.term1) }
-          if (data.term2)   { $('#term2_count').html(data.term2) }
+          if (data.counts) {
+            for (var x = 0; x < data.counts.length; x++) {
+              $('#term' + (x + 1) +'_count').html(data.counts[x])
+            }
+          }
           if (data.terms) {
             $('#term1').html(data.terms[0])
             $('#term2').html(data.terms[1])
