@@ -36,8 +36,9 @@
             }
           }
           if (data.terms) {
-            $('#term1').html(data.terms[0])
-            $('#term2').html(data.terms[1])
+            for (var t = 0; t < data.terms.length; t++) {
+              $('#term' + (t+1)).html(data.terms[t])
+            }
           }
           if (data.message) { $('#chat_output').append('<div>'+data.message+'</div>')}
         },
