@@ -17,35 +17,31 @@
       );
       gad.start();
       */
-
-      ws = $.ws.conn({
-        url : 'ws://localhost:3840',
-        hbStr: null,
-        onopen : function () {
-          $('#chat_send').click(function (e) {
-            ws.send($('#chat_input').val());
-            $('#chat_input').val('');
-          })
-          console.log('connected');
-        },
-        onmessage : function (data) {
-          data = JSON.parse(data);
-          if (data.counts) {
-            for (var x = 0; x < data.counts.length; x++) {
-              $('#term' + (x + 1) +'_count').html(data.counts[x])
-            }
+      var client = new Client('ws://localhost:3840');
+      client.bind('connect', function () {
+        var ws = this.ws;
+        $('#chat .send').click(function (e) {
+          ws.send($('#chat .input').val());
+          $('#chat .input').val('');
+        })
+      })
+      client.bind('message', function (data) {
+        if (data.terms) {
+          $('#game_area').empty();
+          for (var t = 0; t < data.terms.length; t++) {
+            $('#game_area').append(
+              '<div id="term'+(t+1)+'"><span class="name">'+data.terms[t]+
+                '</span>: <span class="count"></span></div>'
+            )
           }
-          if (data.terms) {
-            for (var t = 0; t < data.terms.length; t++) {
-              $('#term' + (t+1)).html(data.terms[t])
-            }
-          }
-          if (data.message) { $('#chat_output').append('<div>'+data.message+'</div>')}
-        },
-        onclose : function (event) {
-          console.log('disconnected');
         }
-      });
+        if (data.counts) {
+          for (var x = 0; x < data.counts.length; x++) {
+            $('#term' + (x + 1) +' .count').html(data.counts[x])
+          }
+        }
+        if (data.message) {$('#chat .output').append('<div>'+data.message+'</div>')}
+      })
     });
   </script>
 </head>
@@ -57,15 +53,12 @@
   </canvas>
 </div> -->
 
-<div id="game_area">
-  <span id="term1"></span>: <span id="term1_count"></span>
-  <span id="term2"></span>: <span id="term2_count"></span>
-</div>
+<div id="game_area"></div>
 
-<div id="chat_area">
-  <input id="chat_input" size="40"/>
-  <button id="chat_send">Send</button>
-  <div id="chat_output"></div>
+<div id="chat">
+  <input class="input" size="40"/>
+  <button class="send">Send</button>
+  <div class="output"></div>
 </div>
 
 </body>

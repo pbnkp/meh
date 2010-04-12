@@ -65,7 +65,7 @@ twitter.addListener('tweet', function (tweet) {
       if (tweet.text.match(terms[term])) { counts[term] = (counts[term] || 0) + 1 }
     }
     if (client_sockets[socket_id]) {
-      var json = JSON.stringify({'counts':counts})
+      var json = JSON.stringify({counts:counts})
       client_sockets[socket_id].write(json)
       //sys.puts("sent " + json)
     }
